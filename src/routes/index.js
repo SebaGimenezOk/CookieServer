@@ -1,6 +1,6 @@
 const express= require('express');
 const cookiesRouter= require('./cookies/cookies.routes');
-
+const sessionRouter= require('./session/session.routes');
 const router= express.Router();
 
 router.get('/health', (_req, res)=> {
@@ -12,6 +12,8 @@ router.get('/health', (_req, res)=> {
     })
 })
 
-.use('/cookies', cookiesRouter);
+.use('/cookies', cookiesRouter)
+.use('/session', sessionRouter);
+
 
 module.exports= router;
