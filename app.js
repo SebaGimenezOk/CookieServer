@@ -1,28 +1,22 @@
-const cookieParser = require('cookie-parser');
-const express = require('express')
-require('dotenv').config();
-const indexRouter = require('./src/routes/index');
-const logger = require('morgan');
+const express = require('express');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
+const cookieParser = require('cookie-parser');
+require('dotenv').config();
+
+
 const app = express();
 
-app.use(express.json());
+const COOKIE_SECRET = process.env.COOKIE_SECRET || 'default';
+
+
+app.use(express.json);
 app.use(express.urlencoded({ extended: true }));
-app.use(logger('tiny'));
 
-
-const COOKIES_SECRET = process.env.COOKIES_SECRET || '3445';
-
-app.use(cookieParser(COOKIES_SECRET));
-
+app.use(cookieParser(COOKIE_SECRET));
 app.use(session({
-    secret:COOKIES_SECRET,
-    resave: true,
-    saveUninitialized: true
-}));
 
-
-app.use(indexRouter);
+}))
 
 
 module.exports = app;

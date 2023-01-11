@@ -1,19 +1,10 @@
-const express= require('express');
-const cookiesRouter= require('./cookies/cookies.routes');
-const sessionRouter= require('./session/session.routes');
-const router= express.Router();
+import { Router } from "express";
+import clientRoutes from "./client.routes.js";
+import authRoutes from "./auth.routes.js";
 
-router.get('/health', (_req, res)=> {
-    const environment= process.env.ENVIRONMENT || 'undefined';
-    res.status(200).json({
-        success: true,
-        health: 'Up!',
-        environment
-    })
-})
+const router = Router();
 
-.use('/cookies', cookiesRouter)
-.use('/session', sessionRouter);
+router.use(clientRoutes);
 
-
-module.exports= router;
+router.use("/api/auth", authRoutes);
+export default router;

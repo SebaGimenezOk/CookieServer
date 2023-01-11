@@ -1,0 +1,67 @@
+<nav class="sticky top-0 z-50 w-full border-b-2 bg-slate-50 transition-all">
+    <div class="flex flex-row justify-between">
+        <ul class="flex flex-row items-center gap-4 text-gray-600 sm:py-1 sm:px-3 md:py-3 md:px-6">
+            <li>
+                <h1 class="text-2xl font-semibold text-black">Rupert</h1>
+            </li>
+            <li>
+                <a href="/" class="text-sm transition-all hover:text-black"> Home </a>
+            </li>
+            <li>
+                <p class="cursor-pointer text-sm transition-all hover:text-black">
+                    Categories
+                </p>
+            </li>
+            <li>
+                <a href="/me/orders" class="text-sm transition-all hover:text-black">
+                    My Orders
+                </a>
+            </li>
+        </ul>
+        <ul class="flex flex-row items-center gap-4 text-gray-600 sm:py-1 sm:px-3 md:py-3 md:px-6">
+            <% if (isAuth && isAuth.isAdmin) { %>
+                <li class="flex cursor-pointer flex-row gap-1 text-sm hover:text-black">
+                    <a href="/nuevo-producto">New product</a>
+                </li>
+                <% } %>
+                    <% if (!isAuth) { %>
+                        <li class="flex cursor-pointer flex-row gap-1 text-sm hover:text-black">
+                            <a href="/register" class="flex flex-row">
+                                <p>Registrarte</p>
+                            </a>
+                        </li>
+                        <li class="flex cursor-pointer flex-row gap-1 text-sm hover:text-black">
+                            <a href="/login" class="flex flex-row">
+                                <div class="text-gray-600">
+                                    <%- include('../icons/user-login.ejs') %>
+                                </div>
+                                <p>Login</p>
+                            </a>
+                        </li>
+                        <% } else { %>
+                            <li class="flex cursor-pointer flex-row gap-1 text-sm hover:text-black">
+                                <a href="/logout" class="flex flex-row">
+                                    <div class="text-gray-600">
+                                        <%- include('../icons/user-logout.ejs') %>
+                                    </div>
+                                    <p>Logout</p>
+                                </a>
+                            </li>
+                            <% }%>
+                                <li class="flex cursor-pointer flex-row gap-1 text-sm hover:text-black">
+                                    <div class="text-blue-400"><%- include('../icons/chat.ejs') %></div>
+                                    <p>Chat + Comunidad</p>
+                                </li>
+                                <li class="hidden cursor-pointer flex-row gap-1 text-sm hover:text-black">
+                                    <div class="text-gray-600">
+                                        <%- include('../icons/user-logout.ejs') %>
+                                    </div>
+                                    <p>Logout</p>
+                                </li>
+                                <li class="flex cursor-pointer flex-row gap-1 text-sm hover:text-black">
+                                    <div class="text-red-400"><%- include('../icons/basket.ejs') %></div>
+                                    <p>Carrito</p>
+                                </li>
+        </ul>
+    </div>
+</nav>

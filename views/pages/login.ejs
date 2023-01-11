@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<%- include('../head.ejs') %>
+
+    <body class="min-h-screen w-full">
+        <%- include('../components/navbar.ejs', {isAuth})%>
+            <main class="mx-auto flex w-11/12 flex-col content-center justify-center gap-6 py-6">
+                <h1 class="text-2xl">Signin</h1>
+                <form action="#" method="post" class="flex w-96 flex-col gap-4" id="loginForm">
+                    <label for="email" class="flex flex-col">
+                        Email
+                        <input type="email" id="email" name="email" class="rounded border-2 py-1 px-3" />
+                    </label>
+                    <label for="password" class="flex flex-col">
+                        password
+                        <input type="password" id="password" name="password" class="rounded border-2 py-1 px-3" />
+                    </label>
+
+                    <div id="loginError" class="hidden bg-red-500 p-2 text-sm text-white"></div>
+
+                    <button type="submit" class="rounded-md bg-green-500 p-3 text-white">
+                        Ingresar
+                    </button>
+                </form>
+            </main>
+
+            <script>
+                const loginForm = document.getElementById("loginForm");
+
+                const params = new Proxy(new URLSearchParams(window.location.search), {
+                    get: (searchParams, prop) => searchParams.get(prop),
+                });
+
+                loginForm.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    const data = Object.fromEntries(formData.entries());
+                    const query = params.next ? "?next=" + params.next : "";
+
+                    const result = await fetch(`/api/auth/login${query}`, {
+                        method: "POST",
+                        body: JSON.stringify(data),
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    });
+
+                    const response = await result;
+
+                    if (response.redirected) {
+                        window.history.pushState("", null, response.url);
+                        window.location.assign(response.url);
+                        return;
+                    }
+
+                    if (response.status !== 200) {
+                        const body = await response.json();
+                        const loginError = document.getElementById("loginError");
+                        loginError.innerText = body.message;
+                        loginError.classList.toggle("hidden");
+                        setTimeout(() => {
+                            loginError.classList.toggle("hidden");
+                            loginError.innerText = "";
+                        }, 3000);
+                    }
+                });
+            </script>
+    </body>
+
+</html>
